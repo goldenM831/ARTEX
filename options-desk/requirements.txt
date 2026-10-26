@@ -1,0 +1,11 @@
+numpy>=1.26
+pandas>=2.1
+pyyaml>=6.0
+pytest>=8.0
+
+# 可选：按需安装
+# streamlit>=1.35        # 看板
+# tqsdk>=3.4             # 天勤实时行情
+# openctp-ctp>=6.7       # CTP 行情 / 交易
+# akshare>=1.14          # 历史数据
+# pyarrow>=15            # parquet 缓存

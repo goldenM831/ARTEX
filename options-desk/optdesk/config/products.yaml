@@ -1,0 +1,169 @@
+# 品种规格表（期权策略引擎的"规则底座"）
+#
+# 说明：
+# - 所有数值请在上线前对照交易所最新《期权合约》与《交易细则》逐项核对，
+#   verified: false 表示尚未人工核对，仅作开发/演示用。
+# - strike_steps 只用于 demo/回放时生成合成期权链；接入真实行情后，行权价以行情里实际挂牌合约为准。
+# - last_trade_rule 用于估算期权到期日（计算剩余期限 T），真实到期日以合约行情字段 expire_datetime 为准。
+#   * czce : 标的期货交割月份前一个月的第 3 个交易日
+#   * dce  : 标的期货交割月份前一个月的第 5 个交易日
+#   * shfe : 标的期货交割月份前一个月的倒数第 5 个交易日（上期所 / 上期能源）
+# - option_style: 国内商品期权均为美式（american），股指 / ETF 期权为欧式。
+# - 组合保证金：三大商品交易所均支持 备兑、牛/熊市价差、跨式/宽跨式 等组合保证金优惠，
+#   具体优惠口径见各交易所《期权组合保证金业务指南》，margin_combo 仅为开关提示。
+
+exchanges:
+  CZCE:
+    name: 郑州商品交易所
+    last_trade_rule: czce
+    option_code_style: czce       # TA601C4800
+    month_digits: 3
+  DCE:
+    name: 大连商品交易所
+    last_trade_rule: dce
+    option_code_style: dce        # PP2601-C-7000
+    month_digits: 4
+  SHFE:
+    name: 上海期货交易所
+    last_trade_rule: shfe
+    option_code_style: shfe       # ru2601C15000
+    month_digits: 4
+  INE:
+    name: 上海国际能源交易中心
+    last_trade_rule: shfe
+    option_code_style: shfe       # sc2601C500
+    month_digits: 4
+
+products:
+  TA:
+    name: PTA
+    exchange: CZCE
+    multiplier: 5            # 吨/手
+    price_tick: 2
+    option_tick: 0.5
+    option_style: american
+    main_months: [1, 5, 9]
+    strike_steps: [[0, 5000, 50], [5000, 10000, 100], [10000, null, 200]]
+    futures_margin_rate: 0.07
+    verified: false
+  MA:
+    name: 甲醇
+    exchange: CZCE
+    multiplier: 10
+    price_tick: 1
+    option_tick: 0.5
+    option_style: american
+    main_months: [1, 5, 9]
+    strike_steps: [[0, 2500, 25], [2500, 5000, 50], [5000, null, 100]]
+    futures_margin_rate: 0.08
+    verified: false
+  PF:
+    name: 短纤
+    exchange: CZCE
+    multiplier: 5
+    price_tick: 2
+    option_tick: 0.5
+    option_style: american
+    main_months: [1, 5, 9]
+    strike_steps: [[0, 5000, 50], [5000, 10000, 100], [10000, null, 200]]
+    futures_margin_rate: 0.07
+    verified: false
+  PP:
+    name: 聚丙烯
+    exchange: DCE
+    multiplier: 5
+    price_tick: 1
+    option_tick: 0.5
+    option_style: american
+    main_months: [1, 5, 9]
+    strike_steps: [[0, 5000, 50], [5000, 10000, 100], [10000, null, 200]]
+    futures_margin_rate: 0.08
+    verified: false
+  L:
+    name: 线型低密度聚乙烯
+    exchange: DCE
+    multiplier: 5
+    price_tick: 1
+    option_tick: 0.5
+    option_style: american
+    main_months: [1, 5, 9]
+    strike_steps: [[0, 5000, 50], [5000, 10000, 100], [10000, null, 200]]
+    futures_margin_rate: 0.08
+    verified: false
+  V:
+    name: 聚氯乙烯
+    exchange: DCE
+    multiplier: 5
+    price_tick: 1
+    option_tick: 0.5
+    option_style: american
+    main_months: [1, 5, 9]
+    strike_steps: [[0, 5000, 50], [5000, 10000, 100], [10000, null, 200]]
+    futures_margin_rate: 0.08
+    verified: false
+  EG:
+    name: 乙二醇
+    exchange: DCE
+    multiplier: 10
+    price_tick: 1
+    option_tick: 0.5
+    option_style: american
+    main_months: [1, 5, 9]
+    strike_steps: [[0, 5000, 50], [5000, 10000, 100], [10000, null, 200]]
+    futures_margin_rate: 0.09
+    verified: false
+  EB:
+    name: 苯乙烯
+    exchange: DCE
+    multiplier: 5
+    price_tick: 1
+    option_tick: 0.5
+    option_style: american
+    main_months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    strike_steps: [[0, 5000, 50], [5000, 10000, 100], [10000, null, 200]]
+    futures_margin_rate: 0.09
+    verified: false
+  PG:
+    name: 液化石油气
+    exchange: DCE
+    multiplier: 20
+    price_tick: 1
+    option_tick: 0.2
+    option_style: american
+    main_months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    strike_steps: [[0, 5000, 50], [5000, 10000, 100], [10000, null, 200]]
+    futures_margin_rate: 0.09
+    verified: false
+  SC:
+    name: 原油
+    exchange: INE
+    multiplier: 1000         # 桶/手
+    price_tick: 0.1
+    option_tick: 0.05
+    option_style: american
+    main_months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    strike_steps: [[0, 250, 5], [250, 500, 10], [500, null, 20]]
+    futures_margin_rate: 0.12
+    verified: false
+  BU:
+    name: 石油沥青
+    exchange: SHFE
+    multiplier: 10
+    price_tick: 1
+    option_tick: 0.5
+    option_style: american
+    main_months: [3, 6, 9, 12]
+    strike_steps: [[0, 2500, 25], [2500, 5000, 50], [5000, null, 100]]
+    futures_margin_rate: 0.09
+    verified: false
+  RU:
+    name: 天然橡胶
+    exchange: SHFE
+    multiplier: 10
+    price_tick: 5
+    option_tick: 1
+    option_style: american
+    main_months: [1, 5, 9]
+    strike_steps: [[0, 10000, 100], [10000, 25000, 250], [25000, null, 500]]
+    futures_margin_rate: 0.09
+    verified: false
