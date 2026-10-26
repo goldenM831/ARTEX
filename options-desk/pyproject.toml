@@ -1,0 +1,35 @@
+[project]
+name = "optdesk"
+version = "0.1.0"
+description = "国内商品期权策略工具：库存备兑 / 领口 / 价差 / 波动监测 / 技术分析 / 实时推荐"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "pandas>=2.1", "pyyaml>=6.0"]
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.35"]
+live = ["tqsdk>=3.4", "openctp-ctp>=6.7"]
+history = ["akshare>=1.14", "pyarrow>=15"]
+dev = ["pytest>=8.0", "ruff"]
+
+[project.scripts]
+optdesk = "optdesk.app:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["optdesk*"]
+
+[tool.setuptools.package-data]
+optdesk = ["config/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 130
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501", "E702", "E741", "E731"]
